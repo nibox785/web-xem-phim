@@ -391,7 +391,3 @@ Dự án này là độc quyền. Tất cả các quyền được bảo lưu.
 - [Hướng Dẫn Claude AI](copilot-instructions.md)
 
 ---
-
-#   p r o j e c t - x e m - p h i m  
- #   w e b - x e m - p h i m  
- 
