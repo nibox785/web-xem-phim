@@ -40,7 +40,7 @@
         │
 ┌───────▼─────────────────────────────────────────────────────┐
 │            DATABASE LAYER (MariaDB 10.4)                    │
-│  - users, admins, movies, genres                           │
+│  - users, movies, genres (admins kept as legacy `admins_legacy` to migrate into `users`)                           │
 │  - Comments, ratings, tokens                               │
 │  - Relationships & indexes                                 │
 └───────────────────────────────────────────────────────────┘
@@ -268,11 +268,11 @@ requireAdmin() {
                   (PK: id)     │
                     └──────────┘
 
-Other Relations:
-movies --FK--> universes
-movies --FK--> movie_actors
-movie_actors --FK--> actors
-admins (separate table from users)
+Other Relations (legacy mappings):
+movies --FK--> studios (legacy: `universes`)
+movies --FK--> movie_casts (legacy: `movie_actors`)
+movie_casts --FK--> actors
+admins (legacy, merged into users via `user_roles`)
 user_tokens (for remember-me)
 ```
 

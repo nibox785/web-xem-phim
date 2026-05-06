@@ -176,12 +176,12 @@ web_project/
 
 ### Bảng Cốt Lõi
 - **users** - Tài khoản người dùng thường xuyên
-- **admins** - Tài khoản admin với vai trò
+- **admins** - (legacy) Tài khoản admin; sẽ được hợp nhất vào `users`/`user_roles`
 - **movies** - Siêu dữ liệu phim (61+ phim)
 - **genres** - Thể loại phim (9 thể loại)
 - **movie_genres** - Mối quan hệ nhiều-nhiều
 - **actors** - Thông tin diễn viên (80+ diễn viên)
-- **movie_actors** - Liên kết dàn diễn viên
+- **movie_actors** - (legacy) Liên kết dàn diễn viên; sẽ được chuẩn hóa thành `movie_casts`
 - **universes** - MCU, DCU, Khác (3 vũ trụ)
 
 ### Bảng Bổ Sung
