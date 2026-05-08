@@ -1,0 +1,28 @@
+.env
+.env.*
+!.env.example
+.phpstorm.meta.php
+*.log
+*.tmp
+*.bak
+*.backup
+*.old
+*.swp
+Thumbs.db
+.DS_Store
+node_modules/
+
+# Composer / PHP dependencies
+/vendor/
+/composer.phar
+/.phpunit.result.cache
+/.phpunit.cache/
+/.php-cs-fixer.cache
+
+# IDE / editor settings
+.idea/
+.vscode/
+
+# Runtime / upload artifacts
+/storage/
+/public/uploads/
