@@ -2,59 +2,42 @@
 
 namespace App\Services;
 
-use App\Repositories\MovieRepository;
+use App\Repositories\GenreRepository;
 
-class MovieService
+class GenreService
 {
-    private MovieRepository $repository;
+    private GenreRepository $repository;
     private PaginationService $paginationService;
 
-    public function __construct(MovieRepository $repository, PaginationService $paginationService)
+    public function __construct(GenreRepository $repository, PaginationService $paginationService)
     {
         $this->repository = $repository;
         $this->paginationService = $paginationService;
     }
 
     /**
-     * Lấy phim theo loại
+     * Lấy phim theo thể loại
      */
-    public function getMoviesByType(string $type, string $status, int $page = 1, int $perPage = 15): array
+    public function getMoviesByGenre(int $genreId, int $page = 1, int $perPage = 15): array
     {
         $offset = ($page - 1) * $perPage;
 
+        // Kiểm tra thể loại tồn tại
+        $genre = $this->repository->getGenre($genreId);
+        if (!$genre) {
+            throw new \Exception('Thể loại không tồn tại');
+        }
+
         // Lấy dữ liệu
-        $movies = $this->repository->getByType($type, $status, $perPage, $offset);
-        $total = $this->repository->countByType($type, $status);
+        $movies = $this->repository->getByGenre($genreId, $perPage, $offset);
+        $total = $this->repository->countByGenre($genreId);
 
         // Tính toán phân trang
         $pagination = $this->paginationService->calculate($total, $page, $perPage);
 
         return [
             'movies' => $this->formatMovies($movies),
-            'pagination' => $pagination,
-            'page' => $page,
-            'total' => $total
-        ];
-    }
-
-
-
-    /**
-     * Lấy phim nổi bật
-     */
-    public function getFeaturedMovies(int $page = 1, int $perPage = 15): array
-    {
-        $offset = ($page - 1) * $perPage;
-
-        // Lấy dữ liệu
-        $movies = $this->repository->getFeatured($perPage, $offset);
-        $total = $this->repository->countFeatured();
-
-        // Tính toán phân trang
-        $pagination = $this->paginationService->calculate($total, $page, $perPage);
-
-        return [
-            'movies' => $this->formatMovies($movies),
+            'genre' => $genre,
             'pagination' => $pagination,
             'page' => $page,
             'total' => $total

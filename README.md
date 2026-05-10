@@ -4,6 +4,27 @@
 
 **NiBoXMoVie** là một nền tảng xem phim full-stack PHP/MySQL được thiết kế để duyệt và xem các bộ phim Marvel & DC. Ứng dụng này cung cấp giao diện hiện đại, thân thiện người dùng cho người dùng thường xuyên khám phá phim và bảng điều khiển quản trị trực quan để quản lý nội dung.
 
+## 🏗️ Tổng Quan Hệ Thống
+
+Hệ thống hiện tại đang đi theo hướng MVC tách lớp:
+- `public/index.php` đóng vai trò router chính cho các request phía người dùng.
+- `app/Controllers/` xử lý request và điều phối dữ liệu.
+- `app/Services/` chứa logic nghiệp vụ và phân trang.
+- `app/Repositories/` chịu trách nhiệm truy vấn MySQL.
+- `app/Views/` chỉ render giao diện.
+- `config/` lưu cấu hình ứng dụng và kết nối cơ sở dữ liệu.
+- `include/` vẫn giữ các file legacy trong giai đoạn chuyển đổi.
+
+Luồng xử lý chính:
+`Request -> Router -> Controller -> Service -> Repository -> View`
+
+Các file legacy đã được mapping sang lớp mới như sau:
+- `marvel.php` và `dcu.php` -> `MovieController::listMovies()`
+- `featured.php` -> `MovieController::listFeatured()`
+- `genres.php` -> `MovieController::showByGenre()`
+- `search.php` -> `MovieController::search()`
+- `other.php` -> sẽ reuse cùng flow movie listing, nhưng cần action/lọc riêng khi triển khai phần còn lại
+
 ### 🎯 Mục Tiêu Dự Án
 - Cung cấp nền tảng tập trung cho nội dung phim Marvel & DC
 - Cho phép người dùng duyệt, tìm kiếm và xem phim
@@ -148,6 +169,8 @@ web_project/
 │   ├── auth.css                  # Kiểu xác thực
 │   ├── admin.css                 # Kiểu admin
 │   ├── responsive.css            # Thiết kế responsive
+│   ├── js/
+│   │   └── admin.js              # JavaScript admin (mới)
 │   └── img/                      # Hình ảnh bổ sung
 │
 ├── images/                       # Ảnh thu nhỏ phim & hình ảnh
@@ -164,7 +187,7 @@ web_project/
 │   ├── slider.js                 # Chức năng thanh trượt
 │   ├── hamburger.js              # Bật/tắt menu di động
 │   ├── watch.js                  # Logic trang xem
-│   └── admin.js                  # JavaScript bảng điều khiển
+│   └── (legacy scripts)
 │
 └── img/                          # Hình ảnh chung
     └── profile.jpg               # Ảnh hồ sơ mặc định

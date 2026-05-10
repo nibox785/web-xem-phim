@@ -364,10 +364,10 @@ assets/
 - Navigation
 - Swipe support (if added)
 
-// admin.js - Admin functionality
-- Form validation
-- Table interactions
-- Delete confirmations
+// assets/js/admin.js - Admin functionality
+- Delegated confirm handler via `data-confirm`
+- Safe interaction hooks cho các action trong bảng admin
+- Không còn phụ thuộc endpoint `fetch_recent_movies.php`
 ```
 
 ---
@@ -407,7 +407,7 @@ Admin fills form:
   - Genres: [Action, Sci-Fi]
   - Universe: Marvel
      ↓
-POST /admin/add_movie.php
+POST /index.php?page=admin&action=admin_add_movie
      ↓
 Validation:
   - Check title not empty
@@ -420,10 +420,12 @@ Transaction begins:
      ↓
 Commit transaction
      ↓
-Redirect to /admin/movies.php
+Redirect to /index.php?page=admin&action=admin_movies
      ↓
 Success message displayed
 ```
+
+Ghi chú: luồng admin mới đi qua `AdminController` + `AdminService`.
 
 ### Example 3: Comment System
 

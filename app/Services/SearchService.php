@@ -2,59 +2,36 @@
 
 namespace App\Services;
 
-use App\Repositories\MovieRepository;
+use App\Repositories\SearchRepository;
 
-class MovieService
+class SearchService
 {
-    private MovieRepository $repository;
+    private SearchRepository $repository;
     private PaginationService $paginationService;
 
-    public function __construct(MovieRepository $repository, PaginationService $paginationService)
+    public function __construct(SearchRepository $repository, PaginationService $paginationService)
     {
         $this->repository = $repository;
         $this->paginationService = $paginationService;
     }
 
     /**
-     * Lấy phim theo loại
+     * Tìm kiếm phim
      */
-    public function getMoviesByType(string $type, string $status, int $page = 1, int $perPage = 15): array
+    public function searchMovies(string $query, int $page = 1, int $perPage = 15): array
     {
         $offset = ($page - 1) * $perPage;
 
         // Lấy dữ liệu
-        $movies = $this->repository->getByType($type, $status, $perPage, $offset);
-        $total = $this->repository->countByType($type, $status);
+        $movies = $this->repository->search($query, $perPage, $offset);
+        $total = $this->repository->countSearch($query);
 
         // Tính toán phân trang
         $pagination = $this->paginationService->calculate($total, $page, $perPage);
 
         return [
             'movies' => $this->formatMovies($movies),
-            'pagination' => $pagination,
-            'page' => $page,
-            'total' => $total
-        ];
-    }
-
-
-
-    /**
-     * Lấy phim nổi bật
-     */
-    public function getFeaturedMovies(int $page = 1, int $perPage = 15): array
-    {
-        $offset = ($page - 1) * $perPage;
-
-        // Lấy dữ liệu
-        $movies = $this->repository->getFeatured($perPage, $offset);
-        $total = $this->repository->countFeatured();
-
-        // Tính toán phân trang
-        $pagination = $this->paginationService->calculate($total, $page, $perPage);
-
-        return [
-            'movies' => $this->formatMovies($movies),
+            'query' => $query,
             'pagination' => $pagination,
             'page' => $page,
             'total' => $total
